@@ -1,6 +1,6 @@
 ## ANGULAR TODO APPLICATION
 
-###Frameworks used
+### Frameworks used
 
 - Angular
 - AdonisJs
@@ -8,15 +8,15 @@
 NB: Both frameworks use NodeJS to keep the language consistent for easy maintainance
 
 
-###Prerequisites
+### Prerequisites
 
 - NodeJS
 - Mysql database
 
 
-###Setup
+### Setup
 
-####1. Preparation
+#### 1. Preparation
 
 - Install angular CLI if not installed
 
@@ -24,7 +24,7 @@ NB: Both frameworks use NodeJS to keep the language consistent for easy maintain
 npm install -g @angular/cli
 ```
 
-####1. Frontend
+#### 1. Frontend
 
 - In a separate terminal run the following commands
 
@@ -34,7 +34,7 @@ npm install
 ng serve --open
 ```
 
-####2. Backend
+#### 2. Backend
 
 - In a separate terminal run the following commands
 
