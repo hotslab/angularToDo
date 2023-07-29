@@ -27,9 +27,4 @@ export default class AuthController {
             token: token
         })
     }
-
-
-    public async destroy({ auth, request, response }: HttpContextContract) {
-
-    }
 }

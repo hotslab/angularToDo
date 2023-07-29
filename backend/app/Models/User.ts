@@ -8,6 +8,7 @@ import {
   hasMany,
   HasMany
 } from '@ioc:Adonis/Lucid/Orm'
+import { Roles } from 'Contracts/enums'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -21,6 +22,9 @@ export default class User extends BaseModel {
 
   @column()
   public surname: string
+
+  @column()
+  public role: Roles
 
   @column({ serializeAs: null })
   public password: string

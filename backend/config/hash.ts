@@ -27,7 +27,7 @@ export default hashConfig({
   | free to change the default value
   |
   */
-  default: Env.get('HASH_DRIVER', 'argon2'),
+  default: Env.get('HASH_DRIVER', 'argon'),
 
   list: {
     /*

@@ -18,6 +18,9 @@ export default class ToDo extends BaseModel {
   @column()
   public content: string
 
+  @column()
+  public completed: boolean
+
   @column.dateTime()
   public dueDate: DateTime
 

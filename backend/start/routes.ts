@@ -25,5 +25,12 @@ Route.get('/', async () => {
 })
 
 Route.group(() => {
+  Route.post('login', 'AuthController.login')
+  Route.post('register', 'AuthController.register')
+}).prefix('/api')
 
-}).middleware('auth')
+
+Route.group(() => {
+  Route.resource('todo', 'ToDosController').apiOnly()
+  Route.resource('user', 'UsersController').apiOnly()
+}).middleware('auth').prefix('/api')

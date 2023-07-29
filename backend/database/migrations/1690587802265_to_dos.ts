@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('title', 255).notNullable().unique()
       table.string('content', 3000).notNullable()
+      table.boolean('completed').defaultTo(false).notNullable()
       table
         .dateTime('due_date', { useTz: true })
       table
