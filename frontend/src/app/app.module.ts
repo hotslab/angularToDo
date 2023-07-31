@@ -5,20 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { TodoComponent } from './todo/todo.component';
-import { UserComponent } from './user/user.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TodoComponent } from './pages/todo/todo.component';
+import { UserComponent } from './pages/user/user.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { HomeComponent } from './pages/home/home.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NgOptimizedImage } from '@angular/common'
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './state';
 import { AuthInterceptor } from './services/interceptors';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { TodosComponent } from './todos/todos.component';
-import { UsersComponent } from './users/users.component';
+import { TodosComponent } from './pages/todos/todos.component';
+import { UsersComponent } from './pages/users/users.component';
 
 @NgModule({
   declarations: [

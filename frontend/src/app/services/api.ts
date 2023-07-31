@@ -39,7 +39,7 @@ export class ApiService {
     }
 
     public getRequest(clientData: ClientData): Observable<any> {
-        return this.httpClient.get<any>(`${this.apiUrl}${clientData.url}`, clientData.data)
+        return this.httpClient.get<any>(`${this.apiUrl}${clientData.url}`)
             .pipe(catchError(this.handleError))
     }
     public postRequest(clientData: ClientData): Observable<any> {

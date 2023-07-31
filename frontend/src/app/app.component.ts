@@ -1,11 +1,9 @@
-import { selectUser, selectUserData, selectUserToken } from './state/index';
+import { selectUserData, selectUserToken } from './state/index';
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, UrlSegment } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Token, User } from './types/index';
 import { logout } from './state/actions/user.actions';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -22,47 +20,48 @@ import { Observable, map } from 'rxjs';
         <div class="navbar-nav">
           <a  
             routerLink="" 
-            [ngClass]="{'bg-dark': currentUrl === '/', 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-dark': currentUrl === '/', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Home
           </a>
-          <a  routerLink="/users" 
+          <a  
+            routerLink="/users" 
             *ngIf="user && user.role === 'admin' && tokenData?.token" 
-            [ngClass]="{'bg-dark': currentUrl === '/users', 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-dark': currentUrl === '/users', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Users
           </a>
-          <a  
+          <a
             (click)="goTo('todos')" *ngIf="user && tokenData?.token"   
-            [ngClass]="{'bg-dark': currentUrl === ('/todos/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-dark': currentUrl === ('/todos/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             ToDos
           </a>
           <a  
-            (click)="goTo('profile')" 
+            (click)="goTo('users')" 
             *ngIf="user && tokenData?.token" 
-            [ngClass]="{'bg-dark': currentUrl === ('/users/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-dark': currentUrl === ('/users/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Profile
           </a>
           <a  
             routerLink="/login" 
             *ngIf="!user" 
-            [ngClass]="{'bg-dark': currentUrl === '/login', 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-dark': currentUrl === '/login', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Login
           </a>
           <a  
             routerLink="/register" 
             *ngIf="!user" 
-            [ngClass]="{'bg-dark': currentUrl === '/register', 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-dark': currentUrl === '/register', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Register
           </a>
           <a  
             (click)="logOut()" 
             *ngIf="user && tokenData?.token" 
-            [ngClass]="{'bg-dark': false, 'navbar-brand px-3 mx-0 text-light fs-6':true,}"
+            [ngClass]="{'bg-danger': true, 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Logout
           </a>
@@ -83,8 +82,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private readonly store: Store,
-    private activatedRoute: ActivatedRoute
+    private readonly store: Store
   ) {
   }
 

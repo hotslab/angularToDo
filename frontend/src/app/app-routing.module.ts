@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { UserComponent } from './user/user.component';
-import { TodoComponent } from './todo/todo.component';
-import { UsersComponent } from './users/users.component';
-import { TodosComponent } from './todos/todos.component';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { UserComponent } from './pages/user/user.component';
+import { TodoComponent } from './pages/todo/todo.component';
+import { UsersComponent } from './pages/users/users.component';
+import { TodosComponent } from './pages/todos/todos.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,12 +18,8 @@ const routes: Routes = [
       { path: ':id', component: UserComponent },
     ]
   },
-  {
-    path: 'todos', component: TodosComponent, children: [
-      { path: ':id', component: TodoComponent },
-    ]
-  },
-  { path: 'hero/:id', component: TodoComponent },
+  { path: 'todos/:id', component: TodosComponent },
+  { path: 'todo/:todoId', component: TodoComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

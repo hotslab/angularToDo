@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../services/api';
+import { ApiService } from '../../services/api';
 import { Store } from '@ngrx/store';
-import { login } from '../state/actions/user.actions';
+import { login } from '../../state/actions/user.actions';
 import { Router } from '@angular/router';
 
 type LoginCredentials = {
