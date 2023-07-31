@@ -6,17 +6,17 @@ import { ApiService } from 'src/app/services/api';
 @Component({
   selector: 'app-todos',
   template: `
-  <div class="container-fluid m-0 p-0 w-full">
-    <div class="card mb-3" style="max-width: 400px;">
+  <div class="container-fluid m-0 p-0 w-full d-flex justify-content-center align-items-center flex-wrap">
+    <div *ngFor="let toDo of toDos; let i = index" class="card m-3" style="width: 400px; height: 200px">
       <div class="row g-0">
         <div class="col-md-4" id="image-style" style="background-image: url('../../assets/images/coin.jpg');">
           <!-- <img src="../../assets/images/coin.jpg" class="img-fluid rounded-start" alt="..."> -->
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            <h5 class="card-title">{{toDo.title}}</h5>
+            <p class="card-text">{{toDo.content}}</p>
+            <p class="card-text"><small class="text-body-secondary">Due - {{toDo.due_date | date : 'YYYY-MM-dd HH:mm:ss'}}</small></p>
           </div>
         </div>
       </div>
@@ -25,6 +25,7 @@ import { ApiService } from 'src/app/services/api';
   `,
   styles: [`
     #image-style
+      height: 200px
       background-size: 100%
       background-size: cover 
       background-position: center
