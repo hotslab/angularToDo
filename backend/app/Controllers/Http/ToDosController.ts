@@ -14,7 +14,7 @@ export default class ToDosController {
                     query.where('completed', Boolean(request.input('completed')))
             })
             .orderBy('due_date', 'desc')
-        response.ok({ toDos: toDos })
+        return response.ok({ toDos: toDos })
     }
 
     public async store({ request, response }: HttpContextContract) {
@@ -29,26 +29,29 @@ export default class ToDosController {
             data: request.all()
         })
         const toDo = await ToDo.create(request.all())
-        response.created({ toDo: toDo })
+        return response.created({ toDo: toDo })
     }
 
     public async update({ request, response }: HttpContextContract) {
-        await validator.validate({
-            schema: schema.create({
-                title: schema.string.optional(([rules.maxLength(255)])),
-                content: schema.string.optional([rules.maxLength(3000)]),
-                due_date: schema.date.optional({ format: 'yyyy-MM-dd HH:mm:ss' }),
-                completed: schema.boolean.optional(),
-            }),
-            data: request.all()
-        })
-        const toDo = await ToDo.query().where('id', request.param('id')).update(request.all())
-        response.created({ toDo: toDo })
+        const toDo = await ToDo.find(request.param('id'))
+        if (toDo) {
+            await validator.validate({
+                schema: schema.create({
+                    title: schema.string.optional(([rules.maxLength(255)])),
+                    content: schema.string.optional([rules.maxLength(3000)]),
+                    due_date: schema.date.optional({ format: 'yyyy-MM-dd HH:mm:ss' }),
+                    completed: schema.boolean.optional(),
+                }),
+                data: request.all()
+            })
+            await toDo.merge(request.all()).save()
+            return response.created({ toDo: toDo })
+        } else return response.notFound('ToDo not found')
     }
 
     public async destroy({ request, response }: HttpContextContract) {
         const toDo = await ToDo.findOrFail(request.param('id'))
         await toDo.delete()
-        response.ok({ toDo: toDo })
+        return response.ok({ toDo: toDo })
     }
 }

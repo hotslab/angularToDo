@@ -12,14 +12,17 @@ export default class AuthController {
             }),
             data: request.all()
         })
-        const user = await User.query().where('email', request.input('email')).firstOrFail()
-        if (!(await Hash.verify(user.password, request.input('password'))))
-            return response.unauthorized('Invalid credentials')
-        const token = await auth.use('api').generate(user, { expiresIn: '2 days' })
-        response.created({
-            user: user,
-            token: token
-        })
+        const user = await User.findBy('email', request.input('email'))
+        if (user) {
+            if (!(await Hash.verify(user.password, request.input('password'))))
+                return response.unauthorized('Invalid credentials')
+            const token = await auth.use('api').generate(user, { expiresIn: '2 days' })
+            return response.created({
+                user: user,
+                token: token
+            })
+        }
+        else return response.notFound('User not found')
     }
 
     public async register({ auth, request, response }: HttpContextContract) {
@@ -40,10 +43,10 @@ export default class AuthController {
             data: request.all()
         })
         const userExists = await User.findBy('email', request.input('email'))
-        if (userExists) return response.unauthorized('User already exists')
+        if (userExists) return response.conflict('User already exists')
         const user = await User.create(request.all())
         const token = await auth.use('api').generate(user, { expiresIn: '2 days' })
-        response.created({
+        return response.created({
             user: user,
             token: token
         })
