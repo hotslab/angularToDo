@@ -42,7 +42,7 @@ import { User } from 'src/app/types';
         <div class="col-12 col-sm-6 col-md-4">
           <div class="row">
             <div class="col-6">
-              <a (click)="resetSearch()" class="btn btn-sm w-100 btn-danger ms-3">Reset</a>
+              <a (click)="resetSearch()" class="btn btn-sm w-100 btn-danger">Reset</a>
             </div>
             <div class="col-6">
               <a (click)="getToDos()" class="btn btn-sm w-100 btn-success">Search</a>

@@ -35,25 +35,25 @@ export default class UserSeeder extends BaseSeeder {
             user_id: user.id,
             title: 'Meeting with Winston',
             content: 'Table 1 in the continental. Dress formaly.',
-            due_date: DateTime.local().plus({ hours: 2 })
+            due_date: DateTime.local().plus({ hours: 2 }).toFormat('yyyy-MM-dd HH:mm')
           },
           {
             user_id: user.id,
             title: 'Appointment with the  Sommelier',
             content: 'Get a tasting with the latest brands and a quality perusal of the cutlery on offer.',
-            due_date: DateTime.local().plus({ days: 1 })
+            due_date: DateTime.local().plus({ days: 1 }).toFormat('yyyy-MM-dd HH:mm:ss')
           },
           {
             user_id: user.id,
             title: 'Appointment with the  Tailor',
             content: 'Get a fitted suit for a dinner party. Suitshould be tactical.',
-            due_date: DateTime.local().plus({ days: 2 })
+            due_date: DateTime.local().plus({ days: 2 }).toFormat('yyyy-MM-dd HH:mm')
           },
           {
             user_id: user.id,
             title: "Visit wife's grave",
             content: 'Remmember to buy some flowers from the florist on the way.',
-            due_date: DateTime.local().plus({ days: 30 })
+            due_date: DateTime.local().plus({ days: 30 }).toFormat('yyyy-MM-dd HH:mm')
           }
         ]
 
