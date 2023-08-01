@@ -31,6 +31,6 @@ Route.group(() => {
 
 
 Route.group(() => {
-  Route.resource('todo', 'ToDosController').apiOnly()
-  Route.resource('user', 'UsersController').apiOnly()
+  Route.resource('todos', 'ToDosController').apiOnly()
+  Route.resource('users', 'UsersController').apiOnly()
 }).middleware('auth').prefix('/api')

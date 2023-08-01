@@ -18,8 +18,8 @@ const routes: Routes = [
       { path: ':id', component: UserComponent },
     ]
   },
-  { path: 'todos/:id', component: TodosComponent },
-  { path: 'todo/:todoId', component: TodoComponent },
+  { path: 'todos', component: TodosComponent },
+  { path: 'todo', component: TodoComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

@@ -4,12 +4,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 
-
-type ClientData = {
-    url: string
-    data: any
-}
-
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -38,23 +32,23 @@ export class ApiService {
         return throwError(() => new Error(error.error));
     }
 
-    public getRequest(clientData: ClientData): Observable<any> {
-        return this.httpClient.get<any>(`${this.apiUrl}${clientData.url}`)
+    public getRequest(clientData: { url: string, options?: any }): Observable<any> {
+        return this.httpClient.get<any>(`${this.apiUrl}${clientData.url}`, clientData.options)
             .pipe(catchError(this.handleError))
     }
-    public postRequest(clientData: ClientData): Observable<any> {
-        return this.httpClient.post<any>(`${this.apiUrl}${clientData.url}`, clientData.data)
+    public postRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
+        return this.httpClient.post<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }
-    public putRequest(clientData: ClientData): Observable<any> {
-        return this.httpClient.put<any>(`${this.apiUrl}${clientData.url}`, clientData.data)
+    public putRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
+        return this.httpClient.put<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }
-    public patchRequest(clientData: ClientData): Observable<any> {
-        return this.httpClient.patch<any>(`${this.apiUrl}${clientData.url}`, clientData.data)
+    public patchRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
+        return this.httpClient.patch<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }
-    public deleteRequest(clientData: ClientData): Observable<any> {
-        return this.httpClient.delete<any>(`${this.apiUrl}${clientData.url}`, clientData.data);
+    public deleteRequest(clientData: { url: string, options?: any }): Observable<any> {
+        return this.httpClient.delete<any>(`${this.apiUrl}${clientData.url}`, clientData.options);
     }
 }

@@ -32,8 +32,9 @@ import { logout } from './state/actions/user.actions';
             Users
           </a>
           <a
-            (click)="goTo('todos')" *ngIf="user && tokenData?.token"   
-            [ngClass]="{'bg-dark': currentUrl === ('/todos/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
+            routerLink="/todos" 
+            *ngIf="user && tokenData?.token"   
+            [ngClass]="{'bg-dark': currentUrl === '/todos', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             ToDos
           </a>
@@ -61,7 +62,7 @@ import { logout } from './state/actions/user.actions';
           <a  
             (click)="logOut()" 
             *ngIf="user && tokenData?.token" 
-            [ngClass]="{'bg-danger': true, 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
+            [ngClass]="{'bg-dark': false, 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Logout
           </a>
@@ -82,7 +83,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private readonly store: Store
+    private readonly store: Store,
   ) {
   }
 
@@ -98,7 +99,7 @@ export class AppComponent implements OnInit {
   logOut() {
     this.store.dispatch(logout())
     localStorage.clear()
-    if (this.user) this.router.navigate(['/'])
+    this.router.navigate(['/'])
   }
 
   ngOnInit(): void {

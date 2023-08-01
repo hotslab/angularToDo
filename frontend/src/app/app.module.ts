@@ -1,6 +1,7 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -19,6 +20,8 @@ import { AuthInterceptor } from './services/interceptors';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TodosComponent } from './pages/todos/todos.component';
 import { UsersComponent } from './pages/users/users.component';
+import { ModalComponent } from './component/modal/modal.component';
+import { SpinnerComponent } from './component/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { UsersComponent } from './pages/users/users.component';
     HomeComponent,
     PageNotFoundComponent,
     TodosComponent,
-    UsersComponent
+    UsersComponent,
+    ModalComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,11 +55,14 @@ import { UsersComponent } from './pages/users/users.component';
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
-    [{
-      provide: HTTP_INTERCEPTORS, useClass:
-        AuthInterceptor, multi: true
-    }]
+    [
+      {
+        provide: HTTP_INTERCEPTORS, useClass:
+          AuthInterceptor, multi: true
+      }
+    ]
   ],
   bootstrap: [AppComponent]
 })

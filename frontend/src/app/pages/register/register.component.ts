@@ -78,7 +78,7 @@ type RegisterCredentials = {
       <div class="form-group mb-3">
         <label for="password">Password</label>
         <input 
-          type="text" 
+          type="password" 
           class="form-control"
           id="password"
           required
@@ -114,10 +114,10 @@ export class RegisterComponent {
   }
   onSubmit() {
     this.loading = true
-    this.http.postRequest({ url: 'register', data: this.credentials }).subscribe({
+    this.http.postRequest({ url: 'register', body: this.credentials }).subscribe({
       next: (response: any) => {
         this.store.dispatch(register({ user: response.user, token: response.token }))
-        this.router.navigate(['/todos', response.user.id])
+        this.router.navigate(['/todos'])
         this.loading = false
       },
       error: (error: any) => {

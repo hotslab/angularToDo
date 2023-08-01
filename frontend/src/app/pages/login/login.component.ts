@@ -44,7 +44,7 @@ type LoginCredentials = {
       <div class="form-group mb-3">
         <label for="password">Password</label>
         <input 
-          type="text" 
+          type="password" 
           class="form-control"
           id="password"
           required
@@ -80,10 +80,10 @@ export class LoginComponent {
   }
   onSubmit() {
     this.loading = true
-    this.http.postRequest({ url: 'login', data: this.credentials }).subscribe({
+    this.http.postRequest({ url: 'login', body: this.credentials }).subscribe({
       next: (response: any) => {
         this.store.dispatch(login({ user: response.user, token: response.token }))
-        this.router.navigate(['/todos', response.user.id])
+        this.router.navigate(['/todos'])
         this.loading = false
       },
       error: (error: any) => {
