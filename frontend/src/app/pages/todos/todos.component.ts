@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { first, mergeMap } from 'rxjs';
 import { ApiService } from 'src/app/services/api';
 import { selectUserData } from 'src/app/state';
 import { User } from 'src/app/types';
+
+enum Order {
+  DESC = 'desc',
+  ASC = 'asc'
+}
 
 @Component({
   selector: 'app-todos',
@@ -19,14 +23,20 @@ import { User } from 'src/app/types';
           <a (click)="goToToDo()" class="btn btn-sm w-100 btn-success">New Todo</a>
         </div>
       </div>
-      <div class="row gx-5 gy-3">
-        <div class="col-12 col-sm-6 col-md-3">
+      <div class="row gx-5 gy-3 mb-3">
+        <div class="col-12 col-sm-4 col-xl-3">
+          <select [(ngModel)]="order" class="form-select form-select-sm" aria-label="Select roles">
+            <option value="desc" selected>Latest</option>
+            <option value="asc">Oldest</option>
+          </select>
+        </div>
+        <div class="col-12 col-sm-4 col-xl-2">
           <input [(ngModel)]="title" class="form-control form-control-sm" type="text" placeholder="Search title.." aria-label=".form-control-sm example">
         </div>
-        <div class="col-12 col-sm-6 3 col-md-3">
+        <div class="col-12 col-sm-4 3 col-xl-2">
           <input [(ngModel)]="content" class="form-control form-control-sm" type="text" placeholder="Search content..." aria-label=".form-control-sm example">
         </div>
-        <div class="col-12 col-sm-6 col-md-2">
+        <div class="col-12 col-sm-4 col-xl-2">
           <div class="form-check form-switch">
             <input 
               class="form-check-input" 
@@ -39,7 +49,7 @@ import { User } from 'src/app/types';
             </label>
           </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-4 col-xl-3">
           <div class="row">
             <div class="col-6">
               <a (click)="resetSearch()" class="btn btn-sm w-100 btn-danger">Reset</a>
@@ -120,25 +130,27 @@ export class TodosComponent implements OnInit {
   title: string | null = null
   content: string | null = null
   completed: number = 0
+  order: Order = Order.DESC
 
   resetSearch() {
     this.title = null
     this.content = null
     this.completed = 0
+    this.order = Order.DESC
     this.getToDos()
   }
   showDeleteModal(toDo: any) {
     this.selectedToDo = toDo
   }
   goToToDo(toDo: any = null) {
-    this.router.navigate(['/todo', toDo ? { toDoId: toDo.id } : {}])
+    this.router.navigate(['/todo'], toDo ? { queryParams: { id: toDo.id } } : {})
   }
   getToDos(): string | void {
     this.loading = true
     if (!this.user) return this.errorMessage = 'User not found'
     let data: {
-      userId: number, title?: string, content?: string, completed: number
-    } = { userId: this.user.id, completed: this.completed ? 1 : 0 }
+      userId: number, title?: string, content?: string, completed: number, order: Order
+    } = { userId: this.user.id, completed: this.completed ? 1 : 0, order: this.order }
 
     if (this.title) data.title = this.title
     if (this.content) data.content = this.content

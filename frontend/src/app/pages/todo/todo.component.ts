@@ -1,4 +1,4 @@
-import { Time, formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -110,7 +110,7 @@ import { User } from 'src/app/types';
             </form>
           </div>
           <div class="card-footer text-body-secondary d-flex justify-content-end align-items-center">
-            <button *ngIf="!toDo" type="button" class="btn btn-danger" (click)="toDoForm.reset(); reset();">Reset</button>
+            <button *ngIf="!toDo" type="button" class="btn btn-danger" (click)="reset(); toDoForm.reset();">Reset</button>
             <button type="submit" class="btn btn-success ms-3" (click)="onSubmit()" [disabled]="!toDoForm.form.valid || loading">Submit</button>
           </div>
         </div>
@@ -167,24 +167,24 @@ export class TodoComponent implements OnInit {
     }
 
   reset() {
-    const dateTime = this.toDo ? new Date(this.toDo.due_date) : new Date()
-    console.log('DATE', dateTime)
-    this.editingToDo.title = null
-    this.editingToDo.content = null
-    this.editingToDo.completed = 0
-    this.editingToDo.due_date = null
-    this.editingToDo.user_id = null
-    this.editingToDo.date = formatDate(dateTime, 'yyyy-MM-dd', 'en-US')
-    this.editingToDo.time = formatDate(dateTime, 'HH:ss', 'en-US')
+    this.editingToDo = {
+      title: null,
+      content: null,
+      completed: 0,
+      date: null,
+      time: null,
+      due_date: null,
+      user_id: null
+    }
   }
   setValues() {
     const date = new Date(this.toDo.due_date)
     this.editingToDo.date = formatDate(date, 'yyyy-MM-dd', 'en-US')
-    this.editingToDo.time = formatDate(date, 'HH:ss', 'en-US')
+    this.editingToDo.time = formatDate(date, 'HH:mm', 'en-US')
     this.editingToDo.title = this.toDo.title
     this.editingToDo.content = this.toDo.content
     this.editingToDo.completed = this.toDo.completed
-    this.editingToDo.due_date = this.toDo.due_date
+    this.editingToDo.due_date = formatDate(date, 'yyyy-MM-dd HH:mm', 'en-US')
   }
   openEditing() {
     this.setValues()
@@ -217,10 +217,10 @@ export class TodoComponent implements OnInit {
     }
   }
   updateTodo() {
-    this.loading
+    this.loading = true
     this.http.putRequest({ url: `todos/${this.toDo.id}`, body: this.editingToDo }).subscribe({
       next: (response: any) => {
-        console.log(response.toDos)
+        console.log(response.toDo)
         this.reset()
         this.editing = false
         this.getToDo()
@@ -232,10 +232,10 @@ export class TodoComponent implements OnInit {
     })
   }
   createToDo() {
-    this.loading
+    this.loading = true
     this.http.postRequest({ url: `todos`, body: this.editingToDo }).subscribe({
       next: (response: any) => {
-        console.log(response.toDos)
+        console.log(response.toDo)
         this.goBackOrCancel()
         this.loading = false
       },
@@ -253,7 +253,7 @@ export class TodoComponent implements OnInit {
     this.loading = true
     this.http.getRequest({ url: `todos/${this.toDoId}` }).subscribe({
       next: (response: any) => {
-        this.toDo = response.toDos
+        this.toDo = response.toDo
         this.loading = false
       },
       error: (error: any) => {
@@ -264,11 +264,8 @@ export class TodoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const date = new Date()
-    this.editingToDo.date = formatDate(date, 'yyyy-MM-dd', 'en-US')
-    this.editingToDo.time = formatDate(date, 'HH:ss', 'en-US')
     this.store.select(selectUserData).subscribe({ next: (user: User | null) => { this.user = user } })
-    this.toDoId = this.route.snapshot.paramMap.get('toDoId')
+    this.toDoId = this.route.snapshot.queryParamMap.get('id')
     this.toDoId ? this.getToDo() : this.editing = true
   }
 }

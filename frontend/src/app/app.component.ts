@@ -11,7 +11,7 @@ import { logout } from './state/actions/user.actions';
   <nav class="navbar navbar-expand-lg bg-black">
     <div class="container-fluid">
       <a routerLink="" class="navbar-brand">
-        <img src="assets/images/continental.png" width="80" height="40" priority>
+        <img src="assets/images/logo.png" width="40" height="40" priority>
       </a>
       <button class="navbar-toggler border border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <i class="bi bi-list text-light"></i>
@@ -38,8 +38,9 @@ import { logout } from './state/actions/user.actions';
           >
             ToDos
           </a>
-          <a  
-            (click)="goTo('users')" 
+          <a
+            [routerLink]="['/user']" 
+            [queryParams]="{id: user.id}"
             *ngIf="user && tokenData?.token" 
             [ngClass]="{'bg-dark': currentUrl === ('/users/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
@@ -91,10 +92,6 @@ export class AppComponent implements OnInit {
   user: User | null = null
   tokenData: Token | null = null
   today: number = Date.now()
-
-  goTo(route: string) {
-    if (this.user) this.router.navigate([`/${route}`, this.user.id])
-  }
 
   logOut() {
     this.store.dispatch(logout())

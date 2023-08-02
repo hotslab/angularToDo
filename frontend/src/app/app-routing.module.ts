@@ -13,11 +13,8 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  {
-    path: 'users', component: UsersComponent, children: [
-      { path: ':id', component: UserComponent },
-    ]
-  },
+  { path: 'users', component: UsersComponent },
+  { path: 'user', component: UserComponent },
   { path: 'todos', component: TodosComponent },
   { path: 'todo', component: TodoComponent },
   { path: '**', component: PageNotFoundComponent }

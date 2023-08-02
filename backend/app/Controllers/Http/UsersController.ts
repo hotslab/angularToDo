@@ -4,9 +4,22 @@ import { validator, schema, rules } from '@ioc:Adonis/Core/Validator'
 import { Roles } from 'Contracts/enums'
 
 export default class UsersController {
-    public async index({ response }: HttpContextContract) {
-        const users = await User.all()
+    public async index({ request, response }: HttpContextContract) {
+        const users = await User.query().where('role', request.input('role'))
+            .where((query) => {
+                if (request.input('email'))
+                    query.whereILike('email', `%${request.input('email')}%`)
+                if (request.input('name'))
+                    query.whereILike('name', `%${request.input('name')}%`)
+                if (request.input('surname'))
+                    query.where('surname', request.input('surname'))
+            })
+            .orderBy('created_at', request.input('order') === 'desc' ? 'desc' : 'asc')
         return response.ok({ users: users })
+    }
+
+    public async show({ request, response }: HttpContextContract) {
+        return response.ok({ user: await User.find(request.param('id')) })
     }
 
     public async store({ request, response }: HttpContextContract) {
@@ -59,7 +72,7 @@ export default class UsersController {
                 data: request.all()
             })
             await user.merge(request.all()).save()
-            return response.created('User updated')
+            return response.created({ user: user })
         } else response.notFound('User not found')
     }
 

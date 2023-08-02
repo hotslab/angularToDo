@@ -4,7 +4,6 @@ import { validator, schema, rules } from '@ioc:Adonis/Core/Validator'
 
 export default class ToDosController {
     public async index({ request, response }: HttpContextContract) {
-        console.log(request.all())
         const toDos = await ToDo.query().where('userId', request.input('userId'))
             .where((query) => {
                 if (request.input('title'))
@@ -14,12 +13,12 @@ export default class ToDosController {
                 if (request.input('completed'))
                     query.where('completed', request.input('completed'))
             })
-            .orderBy('due_date', 'desc')
+            .orderBy('due_date', request.input('order') === 'desc' ? 'desc' : 'asc')
         return response.ok({ toDos: toDos })
     }
 
     public async show({ request, response }: HttpContextContract) {
-        return response.ok({ toDos: await ToDo.find(request.param('id')) })
+        return response.ok({ toDo: await ToDo.find(request.param('id')) })
     }
 
     public async store({ request, response }: HttpContextContract) {

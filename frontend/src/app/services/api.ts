@@ -19,17 +19,16 @@ export class ApiService {
     }
 
     private handleError(error: HttpErrorResponse) {
-        if (error.status === 0) {
-            // A client-side or network error occurred. Handle it accordingly.
-            console.error('An error occurred:', error.error);
-        } else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong.
-            console.error(
-                `Backend returned code ${error.status}, body was: `, error.error);
+        console.log(error)
+        let errorMessage = 'An internal server error occured. Please try again.'
+        if (error.status !== 500) {
+            if (typeof error.error === 'string')
+                errorMessage = error.error
+            else if (error.error instanceof Object && error.error.constructor === Object)
+                if (error.error.hasOwnProperty('message')) errorMessage = error.error.message
         }
         // Return an observable with a user-facing error message.
-        return throwError(() => new Error(error.error));
+        return throwError(() => new Error(errorMessage))
     }
 
     public getRequest(clientData: { url: string, options?: any }): Observable<any> {

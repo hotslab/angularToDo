@@ -9,10 +9,10 @@ import { Component } from '@angular/core';
   >
     <div class="text-center">
         <img 
-          class="bg-black pt-3 pb-4 px-3 mb-3 rounded-pill shadow" 
-          src="../../assets/images/continental.png" width="300" height="150" priority
+          class="mb-3 shadow-lg" 
+          src="../../assets/images/logo.png" width="250" height="250" priority
         >
-        <h2 class="text-light fw-bolder shadow">THE CONTINENTAL TODO</h2>
+        <h2 class="text-light fw-bolder shadow-lg bg-dark px-4 py-3 rounded-pill">THE CONTINENTAL TODO</h2>
     </div>
   </div>
   `,

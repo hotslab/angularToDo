@@ -1,5 +1,17 @@
 {
   "commands": {
+    "create:admin": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/CreateAdmin",
+      "commandName": "create:admin",
+      "description": "Command to register a new admin for ToDo application",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",
