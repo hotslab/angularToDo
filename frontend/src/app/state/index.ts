@@ -42,3 +42,8 @@ export const selectUserToken = createSelector(
   selectUser,
   userStore.userToken
 )
+
+export const selectUserNotifications = createSelector(
+  selectUser,
+  userStore.userNotifications
+)

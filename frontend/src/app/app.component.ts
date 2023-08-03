@@ -1,16 +1,17 @@
-import { selectUserData, selectUserToken } from './state/index';
+import { ApiService } from './services/api';
+import { selectUserData, selectUserNotifications, selectUserToken } from './state/index';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Token, User } from './types/index';
-import { logout } from './state/actions/user.actions';
+import { addNotifications, logout, removeNotifications } from './state/actions/user.actions';
 
 @Component({
   selector: 'app-root',
   template: `
   <nav class="navbar navbar-expand-sm bg-black">
     <div class="container-fluid">
-      <a routerLink="" class="navbar-brand">
+      <a class="navbar-brand">
         <img src="assets/images/logo.png" width="40" height="40" priority>
       </a>
       <button class="navbar-toggler border border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +20,7 @@ import { logout } from './state/actions/user.actions';
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a  
+            *ngIf="!user"   
             routerLink="" 
             [ngClass]="{'bg-dark': currentUrl === '/', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
@@ -45,6 +47,13 @@ import { logout } from './state/actions/user.actions';
             [ngClass]="{'bg-dark': currentUrl === ('/users/'+user.id), 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
           >
             Profile
+          </a>
+          <a  
+            routerLink="/notifications" 
+            *ngIf="user && tokenData?.token"
+            [ngClass]="{'bg-dark': currentUrl === '/notifications', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer position-relative':true,}"
+          >
+            Notifications <span *ngIf="notificationCount > 0" class="badge text-bg-danger">{{ notificationCount }}</span>
           </a>
           <a  
             routerLink="/login" 
@@ -85,9 +94,13 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private readonly store: Store,
+    private http: ApiService
   ) {
   }
 
+  errorMessage: string | null = null
+  notifications: any[] = []
+  notificationCount: number = 0
   currentUrl: string | null = null
   user: User | null = null
   tokenData: Token | null = null
@@ -98,15 +111,34 @@ export class AppComponent implements OnInit {
     localStorage.clear()
     this.router.navigate(['/'])
   }
+  getNotifications(): string | void {
+    if (!this.user) return this.errorMessage = 'User not found'
+    this.http.getRequest({ url: `notifications`, options: { params: { userId: this.user.id } } }).subscribe({
+      next: (response: any) => {
+        this.notifications = response.notifications
+        this.store.dispatch(addNotifications({ notifications: response.notifications.length }))
+      },
+      error: (error: any) => {
+        console.log(error)
+        this.errorMessage = error.message
+      }
+    })
+  }
 
   ngOnInit(): void {
+    this.notificationCount = 0
+    this.store.select(selectUserData).subscribe({ next: (user: User | null) => { this.user = user } })
+    this.store.select(selectUserToken).subscribe({ next: (token: Token | null) => this.tokenData = token })
     this.router.events.subscribe({
       next: event => {
         if (event instanceof NavigationEnd) this.currentUrl = event.urlAfterRedirects
+        if (this.currentUrl == '/notifications' && this.notificationCount > 0) this.store.dispatch(removeNotifications())
       }
     })
-    this.store.select(selectUserData).subscribe({ next: (user: User | null) => { this.user = user } })
-    this.store.select(selectUserToken).subscribe({ next: (token: Token | null) => this.tokenData = token })
+    this.getNotifications()
+  }
+  ngAfterViewInit(): void {
+    this.store.select(selectUserNotifications).subscribe({ next: (notifications: number) => { this.notificationCount = notifications } })
   }
 }
 

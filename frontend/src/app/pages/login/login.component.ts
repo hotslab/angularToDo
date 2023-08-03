@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api';
 import { Store } from '@ngrx/store';
 import { login } from '../../state/actions/user.actions';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 type LoginCredentials = {
   email: string | null
@@ -82,11 +82,12 @@ type LoginCredentials = {
   <app-spinner *ngIf="loading" />
   `,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   constructor(
     private http: ApiService,
     private readonly store: Store,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   loading: boolean = false
@@ -109,5 +110,12 @@ export class LoginComponent {
         this.loading = false
       }
     })
+  }
+
+  ngOnInit(): void {
+    const unAuthorized = this.route.snapshot.queryParamMap.get('noAuth')
+    this.errorMessage = unAuthorized
+      ? 'Your session expired or you are unauthorized. Please login again, or upgrade your privileges to access the resource requested respectively.'
+      : null
   }
 }

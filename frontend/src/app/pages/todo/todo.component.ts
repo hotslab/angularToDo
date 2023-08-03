@@ -64,7 +64,7 @@ import { User } from 'src/app/types';
                   </div>
                 </div>
               </div>
-              <div class="form-check form-switch mb-3">
+              <!-- <div class="form-check form-switch mb-3">
                 <input 
                   class="form-check-input" 
                   type="checkbox" 
@@ -74,7 +74,7 @@ import { User } from 'src/app/types';
                 <label class="form-check-label" for="flexCheckIndeterminate">
                   Completed
                 </label>
-              </div>
+              </div> -->
               <div class="form-group mb-3">
                 <label for="date">Due Date</label>
                 <input 
@@ -180,11 +180,13 @@ export class TodoComponent implements OnInit {
   setValues() {
     const date = new Date(this.toDo.due_date)
     this.editingToDo.date = formatDate(date, 'yyyy-MM-dd', 'en-US')
-    this.editingToDo.time = formatDate(date, 'HH:mm', 'en-US')
+    this.editingToDo.time = formatDate(date, 'HH:mm:ss', 'en-US')
     this.editingToDo.title = this.toDo.title
     this.editingToDo.content = this.toDo.content
     this.editingToDo.completed = this.toDo.completed
-    this.editingToDo.due_date = formatDate(date, 'yyyy-MM-dd HH:mm', 'en-US')
+    this.editingToDo.due_date = formatDate(date, 'yyyy-MM-dd HH:mm:ss', 'en-US')
+    this.editingToDo.user_id = Number(this.user?.id)
+    console.log(this.editingToDo)
   }
   openEditing() {
     this.setValues()
@@ -196,34 +198,31 @@ export class TodoComponent implements OnInit {
     this.updateTodo()
   }
   onSubmit() {
-    const dateTime = `${this.editingToDo.date} ${this.editingToDo.time}:00`
+    const dateTime = `${this.editingToDo.date} ${this.editingToDo.time}`
     let currentTime = new Date().getTime()
     if (this.toDo) {
       const savedDate = new Date(this.toDo.due_date).getTime()
       currentTime = currentTime < savedDate ? currentTime : savedDate
     }
-    console.log(dateTime)
     if (
       (!this.toDo && new Date(dateTime).getTime() < currentTime)
       || (this.toDo && new Date(dateTime).getTime() < currentTime)
     ) this.errorMessage = 'The date set is in the past'
     else {
-      this.editingToDo.due_date = dateTime
-      this.editingToDo.user_id = Number(this.user?.id)
-      if (this.toDo)
-        this.updateTodo()
-      else if (!this.toDo)
-        this.createToDo()
+      this.editingToDo.due_date = formatDate(new Date(dateTime), 'yyyy-MM-dd HH:mm:ss', 'en-US')
+      if (this.toDo) this.updateTodo()
+      else if (!this.toDo) this.createToDo()
     }
   }
   updateTodo() {
     this.loading = true
     this.http.putRequest({ url: `todos/${this.toDo.id}`, body: this.editingToDo }).subscribe({
       next: (response: any) => {
-        console.log(response.toDo)
-        this.reset()
-        this.editing = false
-        this.getToDo()
+        if (this.editing) {
+          this.reset()
+          this.editing = false
+          this.getToDo()
+        } this.goBackOrCancel()
       },
       error: (error: any) => {
         this.errorMessage = error.message
@@ -235,7 +234,6 @@ export class TodoComponent implements OnInit {
     this.loading = true
     this.http.postRequest({ url: `todos`, body: this.editingToDo }).subscribe({
       next: (response: any) => {
-        console.log(response.toDo)
         this.goBackOrCancel()
         this.loading = false
       },

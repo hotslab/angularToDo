@@ -7,7 +7,7 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('title', 255).notNullable().unique()
+      table.string('title', 255).notNullable()
       table.enum('status', Object.values(NotificationStatus))
         .defaultTo(NotificationStatus.DUE)
         .notNullable()

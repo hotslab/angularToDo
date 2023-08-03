@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { TodoComponent } from './pages/todo/todo.component';
@@ -45,7 +44,6 @@ import { NotificationsComponent } from './pages/notifications/notifications.comp
     AppRoutingModule,
     FormsModule,
     NgOptimizedImage,
-    BrowserAnimationsModule,
     StoreModule.forRoot(reducers, {
       metaReducers
     }),

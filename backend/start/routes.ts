@@ -33,4 +33,5 @@ Route.group(() => {
 Route.group(() => {
   Route.resource('todos', 'ToDosController').apiOnly()
   Route.resource('users', 'UsersController').apiOnly()
+  Route.resource('notifications', 'NotificationsController').apiOnly()
 }).middleware('auth').prefix('/api')

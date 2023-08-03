@@ -15,7 +15,7 @@ export const adminsToCreate = [
         name: 'Charon',
         surname: 'Concierge',
         role: Roles.ADMIN,
-        password: 'boogeyman'
+        password: 'itsaplasure'
     }
 ]
 

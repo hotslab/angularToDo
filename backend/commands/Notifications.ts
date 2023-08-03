@@ -96,6 +96,6 @@ export default class Notifications extends BaseCommand {
       }
     }
 
-    this.logger.info(`Finished processing ${toDos.length} ToDos.`)
+    this.logger.info(`Finished processing ${toDos.length} ToDos at ${DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss')}.`)
   }
 }

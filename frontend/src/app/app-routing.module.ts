@@ -8,6 +8,7 @@ import { UserComponent } from './pages/user/user.component';
 import { TodoComponent } from './pages/todo/todo.component';
 import { UsersComponent } from './pages/users/users.component';
 import { TodosComponent } from './pages/todos/todos.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'user', component: UserComponent },
   { path: 'todos', component: TodosComponent },
   { path: 'todo', component: TodoComponent },
+  { path: 'notifications', component: NotificationsComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

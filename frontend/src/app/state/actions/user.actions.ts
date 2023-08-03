@@ -14,3 +14,12 @@ export const register = createAction(
 export const logout = createAction(
     '[Logout Button] Logout'
 )
+
+export const addNotifications = createAction(
+    '[Root Page] AddNotifications',
+    props<{ notifications: number }>()
+)
+
+export const removeNotifications = createAction(
+    '[Notification Page] RemoveNotifications'
+)
