@@ -10,7 +10,10 @@ import { User } from 'src/app/types';
   template: `
   <div class="container-fluid m-0 p-3 w-full d-flex justify-content-center align-items-center flex-wrap">
     <div class="text-light bg-black d-flex justify-content-between align-items-center w-100 p-3 rounded flex-wrap">
-      <h3>{{user ? user.name + ' ' +  user.surname : 'Create User' }}</h3>
+      <h3 class="text-capitalize">
+        {{user ? user.name + ' ' +  user.surname : 'Create User' }}'s Notifications
+      </h3>
+      <h2 class="text-secondary"> {{notifications.length}}</h2>
     </div>
     <div *ngFor="let notification of notifications; let i = index" class="card text-light bg-black m-3" style="height: 270px; width: 300px;">
       <div class="card-header mt-3">
@@ -49,7 +52,6 @@ export class NotificationsComponent implements OnInit {
     private readonly store: Store,
   ) { }
 
-  a = 'sdk;dsa;kd;askd;kasdasadasddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'
   notifications: any[] = []
   user: User | null = null
   errorMessage: string | null = null

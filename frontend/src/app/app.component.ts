@@ -12,7 +12,7 @@ import { addNotifications, logout, removeNotifications } from './state/actions/u
   <nav class="navbar navbar-expand-sm bg-black">
     <div class="container-fluid">
       <a class="navbar-brand">
-        <img src="assets/images/logo.png" width="40" height="40" priority>
+        <img src="assets/images/logo.png" width="40" height="40" priority alt="logo">
       </a>
       <button class="navbar-toggler border border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <i class="bi bi-list text-light"></i>
@@ -90,7 +90,6 @@ import { addNotifications, logout, removeNotifications } from './state/actions/u
   `,
 })
 export class AppComponent implements OnInit {
-
   constructor(
     private router: Router,
     private readonly store: Store,
@@ -125,7 +124,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.notificationCount = 0
     this.store.select(selectUserData).subscribe({ next: (user: User | null) => { this.user = user } })
     this.store.select(selectUserToken).subscribe({ next: (token: Token | null) => this.tokenData = token })
     this.router.events.subscribe({

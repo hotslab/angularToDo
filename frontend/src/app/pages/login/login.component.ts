@@ -95,27 +95,28 @@ export class LoginComponent implements OnInit {
   credentials: LoginCredentials = { email: 'john.wick@continental.com', password: 'boogeyman' }
 
   reset() {
-    this.credentials = { email: null, password: null }
+    // this.credentials = { email: null, password: null }
   }
   onSubmit() {
-    this.loading = true
-    this.http.postRequest({ url: 'login', body: this.credentials }).subscribe({
-      next: (response: any) => {
-        this.store.dispatch(login({ user: response.user, token: response.token }))
-        this.router.navigate(['/todos'])
-        this.loading = false
-      },
-      error: (error: any) => {
-        this.errorMessage = error.message
-        this.loading = false
-      }
-    })
+    // event?.preventDefault();
+    // this.loading = true
+    // this.http.postRequest({ url: 'login', body: this.credentials }).subscribe({
+    //   next: (response: any) => {
+    //     this.store.dispatch(login({ user: response.user, token: response.token }))
+    //     this.router.navigate(['/todos'])
+    //     this.loading = false
+    //   },
+    //   error: (error: any) => {
+    //     this.errorMessage = error.message
+    //     this.loading = false
+    //   }
+    // })
   }
 
   ngOnInit(): void {
-    const unAuthorized = this.route.snapshot.queryParamMap.get('noAuth')
-    this.errorMessage = unAuthorized
-      ? 'Your session expired or you are unauthorized. Please login again, or upgrade your privileges to access the resource requested respectively.'
-      : null
+    // const unAuthorized = this.route.snapshot.queryParamMap.get('noAuth')
+    // this.errorMessage = unAuthorized
+    //   ? 'Your session expired or you are unauthorized. Please login again, or upgrade your privileges to access the resource requested respectively.'
+    //   : null
   }
 }
