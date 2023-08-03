@@ -32,9 +32,9 @@ enum Roles {
             <span class="card-text text-body-secondary mb-5" style="font-size: 15px;">Email</span>
             <p class="card-text">{{user.email}}</p>
             <span class="card-text text-body-secondary mb-5" style="font-size: 15px;">Registered on</span>
-            <p class="card-text">{{user.created_at | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
+            <p class="card-text">{{user.created_at | date: "yyyy-MM-dd 'at' HH:mm:ss"}}</p>
             <p class="card-text text-body-secondary" style="font-size: 15px;">
-              Last updated on {{user.updated_at | date: 'yyyy-MM-dd HH:mm:ss'}}
+              Last updated on {{user.updated_at | date: "yyyy-MM-dd 'at' HH:mm:ss"}}
             </p>
           </div>
         </div>
@@ -236,7 +236,6 @@ export class UserComponent implements OnInit {
     this.loading = true
     this.http.putRequest({ url: `users/${this.user.id}`, body: this.editingUser }).subscribe({
       next: (response: any) => {
-        console.log(response.user)
         this.reset()
         this.editing = false
         this.getUser()
@@ -251,7 +250,6 @@ export class UserComponent implements OnInit {
     this.loading = true
     this.http.postRequest({ url: `users`, body: this.editingUser }).subscribe({
       next: (response: any) => {
-        console.log(response.user)
         this.goBackOrCancel()
         this.loading = false
       },
@@ -273,7 +271,6 @@ export class UserComponent implements OnInit {
         this.loading = false
       },
       error: (error: any) => {
-        console.log(error)
         this.errorMessage = error.message
         this.loading = false
       }

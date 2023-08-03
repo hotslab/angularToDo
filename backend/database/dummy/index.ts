@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 export const adminsToCreate = [
     {
-        email: 'winston.scott@continental.com',
+        email: 'manager@continental.com',
         name: 'Winston',
         surname: 'Scott',
         role: Roles.ADMIN,

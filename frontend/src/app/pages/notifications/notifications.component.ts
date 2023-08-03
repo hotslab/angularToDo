@@ -25,7 +25,7 @@ import { User } from 'src/app/types';
           <span class="text-danger" *ngIf="notification.status == 'overdue'">{{notification.status }}</span>  
         </h5>
         <span class="text-secondary mb-5" style="font-size: 12px;">Due on</span>
-        <h6 class="card-text">{{ notification.due_date | date: 'yyyy-MM-dd HH:mm:ss'}}</h6>
+        <h6 class="card-text">{{ notification.due_date | date: "yyyy-MM-dd 'at' HH:mm:ss"}}</h6>
       </div>
       <div class="card-body d-flex justify-content-end align-items-center w-100">
         <a (click)="viewToDo(notification)" class="btn btn-sm btn-success ms-3">View</a>
@@ -77,7 +77,6 @@ export class NotificationsComponent implements OnInit {
         this.loading = false
       },
       error: (error: any) => {
-        console.log(error)
         this.errorMessage = error.message
         this.loading = false
       }

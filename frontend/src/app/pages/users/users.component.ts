@@ -70,7 +70,7 @@ enum Order {
         <span class="text-secondary mb-5" style="font-size: 12px;">Email</span>
         <h5 class="card-title">{{user.email }}</h5>
         <span class="text-secondary mb-5" style="font-size: 12px;">Registered</span>
-        <h6 class="card-text">{{ user.created_at | date: 'yyyy-MM-dd HH:mm:ss'}}</h6>
+        <h6 class="card-text">{{ user.created_at | date: "YYYY-MM-dd 'at' HH:mm:ss"}}</h6>
       </div>
       <div class="card-body d-flex justify-content-end align-items-center w-100">
         <a (click)="showDeleteModal(user)" class="btn btn-sm btn-danger ms-3">Delete</a>
@@ -173,7 +173,6 @@ export class UsersComponent implements OnInit {
     this.loading = true
     this.http.deleteRequest({ url: `users/${this.selectedUser.id}` }).subscribe({
       next: (response: any) => {
-        console.log(response.user)
         this.selectedUser = null
         this.getUsers()
       },

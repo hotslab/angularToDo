@@ -23,7 +23,7 @@ import { User } from 'src/app/types';
         <p class="card-text fs-3">{{toDo.content}}</p>
       </div>
       <div class="card-footer text-black">
-        Due on <span class="text-secondary">{{ toDo.due_date | date: 'YYYY-MM-dd HH:mm:ss'}}</span>
+        Due on <span class="text-secondary">{{ toDo.due_date | date: "YYYY-MM-dd 'at' HH:mm:ss"}}</span>
       </div>
     </div>
     <div *ngIf="editing" class="container mt-5">
@@ -64,17 +64,6 @@ import { User } from 'src/app/types';
                   </div>
                 </div>
               </div>
-              <!-- <div class="form-check form-switch mb-3">
-                <input 
-                  class="form-check-input" 
-                  type="checkbox" 
-                  [(ngModel)]="editingToDo.completed" name="completed"
-                  id="completed"
-                >
-                <label class="form-check-label" for="flexCheckIndeterminate">
-                  Completed
-                </label>
-              </div> -->
               <div class="form-group mb-3">
                 <label for="date">Due Date</label>
                 <input 
@@ -185,8 +174,6 @@ export class TodoComponent implements OnInit {
     this.editingToDo.content = this.toDo.content
     this.editingToDo.completed = this.toDo.completed
     this.editingToDo.due_date = formatDate(date, 'yyyy-MM-dd HH:mm:ss', 'en-US')
-    this.editingToDo.user_id = Number(this.user?.id)
-    console.log(this.editingToDo)
   }
   openEditing() {
     this.setValues()
@@ -209,6 +196,7 @@ export class TodoComponent implements OnInit {
       || (this.toDo && new Date(dateTime).getTime() < currentTime)
     ) this.errorMessage = 'The date set is in the past'
     else {
+      this.editingToDo.user_id = Number(this.user?.id)
       this.editingToDo.due_date = formatDate(new Date(dateTime), 'yyyy-MM-dd HH:mm:ss', 'en-US')
       if (this.toDo) this.updateTodo()
       else if (!this.toDo) this.createToDo()

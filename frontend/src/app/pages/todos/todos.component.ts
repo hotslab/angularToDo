@@ -62,7 +62,7 @@ enum Order {
       </div>
     </div>
     <div *ngFor="let toDo of toDos; let i = index" class="card text-light bg-black m-3" style="height: 320px; width: 300px;">
-      <div class="card-header mt-3">Due on <span class="text-white-50">{{toDo.due_date | date : 'YYYY-MM-dd HH:mm:ss'}}</span></div>
+      <div class="card-header mt-3">Due on <span class="text-white-50">{{toDo.due_date | date : "YYYY-MM-dd 'at' HH:mm:ss"}}</span></div>
       <div class="card-body">
         <h5 class="card-title overflow-hidden" style="height: 50px">
           {{ toDo.title && toDo.title.length > 35 ? toDo.title.substring(0, 35) + '...' : toDo.title}}
@@ -170,7 +170,6 @@ export class TodosComponent implements OnInit {
     this.loading = true
     this.http.deleteRequest({ url: `todos/${this.selectedToDo.id}` }).subscribe({
       next: (response: any) => {
-        console.log(response.toDo)
         this.selectedToDo = null
         this.getToDos()
       },

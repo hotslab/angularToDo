@@ -19,7 +19,6 @@ export class ApiService {
     }
 
     private handleError(error: HttpErrorResponse) {
-        console.log(error)
         let errorMessage = 'An internal server error occured. Please try again.'
         if (error.status !== 500) {
             if (typeof error.error === 'string')

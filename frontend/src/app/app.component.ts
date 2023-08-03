@@ -119,7 +119,6 @@ export class AppComponent implements OnInit {
         this.store.dispatch(addNotifications({ notifications: response.notifications.length }))
       },
       error: (error: any) => {
-        console.log(error)
         this.errorMessage = error.message
       }
     })
