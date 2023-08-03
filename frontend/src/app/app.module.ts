@@ -22,6 +22,7 @@ import { TodosComponent } from './pages/todos/todos.component';
 import { UsersComponent } from './pages/users/users.component';
 import { ModalComponent } from './component/modal/modal.component';
 import { SpinnerComponent } from './component/spinner/spinner.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SpinnerComponent } from './component/spinner/spinner.component';
     UsersComponent,
     ModalComponent,
     SpinnerComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,

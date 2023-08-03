@@ -8,7 +8,7 @@ import { logout } from './state/actions/user.actions';
 @Component({
   selector: 'app-root',
   template: `
-  <nav class="navbar navbar-expand-lg bg-black">
+  <nav class="navbar navbar-expand-sm bg-black">
     <div class="container-fluid">
       <a routerLink="" class="navbar-brand">
         <img src="assets/images/logo.png" width="40" height="40" priority>

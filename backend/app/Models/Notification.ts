@@ -2,16 +2,14 @@ import {
   BaseModel,
   column,
   belongsTo,
-  BelongsTo,
-  hasMany,
-  HasMany
+  BelongsTo
 } from '@ioc:Adonis/Lucid/Orm'
 import { DateTime } from 'luxon'
 import User from 'App/Models/User'
-import Notification from 'App/Models/Notification'
+import ToDo from 'App/Models/ToDo'
+import { NotificationStatus } from 'Contracts/enums'
 
-
-export default class ToDo extends BaseModel {
+export default class Notification extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -19,10 +17,10 @@ export default class ToDo extends BaseModel {
   public title: string
 
   @column()
-  public content: string
+  public status: NotificationStatus
 
   @column()
-  public completed: boolean
+  public viewed: boolean
 
   @column.dateTime()
   public dueDate: DateTime
@@ -30,11 +28,17 @@ export default class ToDo extends BaseModel {
   @column()
   public userId: number
 
+  @column()
+  public toDoId: number
+
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 
-  @hasMany(() => Notification)
-  public notifications: HasMany<typeof Notification>
+  @belongsTo(() => ToDo, {
+    localKey: 'id',
+    foreignKey: 'to_do_id'
+  })
+  public todo: BelongsTo<typeof ToDo>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

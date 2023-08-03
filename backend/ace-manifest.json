@@ -12,6 +12,33 @@
       "aliases": [],
       "flags": []
     },
+    "notifications": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/Notifications",
+      "commandName": "notifications",
+      "description": "Command to notify users of ToDo tasks that are due or overdue on a specified time, and which closes those that are stale after overdue cut off time.",
+      "args": [],
+      "aliases": [],
+      "flags": [
+        {
+          "name": "remminderTime",
+          "propertyName": "remminderTime",
+          "type": "number",
+          "alias": "r",
+          "description": "Time in hours to send ToDo notification before due time"
+        },
+        {
+          "name": "overdueTime",
+          "propertyName": "overdueTime",
+          "type": "number",
+          "alias": "o",
+          "description": "Time in hours to automatically close ToDo after due date"
+        }
+      ]
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",

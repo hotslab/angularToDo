@@ -7,7 +7,8 @@
     "build": "node ace build --production",
     "start": "node server.js",
     "test": "node ace test",
-    "lint": "eslint . --ext=.ts"
+    "lint": "eslint . --ext=.ts",
+    "cron": "npx nodemon cron.js"
   },
   "eslintConfig": {
     "extends": [
@@ -21,11 +22,14 @@
     "@adonisjs/assembler": "^5.9.5",
     "@japa/preset-adonis": "^1.2.0",
     "@japa/runner": "^2.5.1",
+    "@types/node-cron": "^3.0.8",
     "@types/proxy-addr": "^2.0.0",
+    "@types/shelljs": "^0.8.12",
     "@types/source-map-support": "^0.5.6",
     "adonis-preset-ts": "^2.1.0",
     "eslint": "^8.46.0",
     "eslint-plugin-adonis": "^2.1.1",
+    "nodemon": "^3.0.1",
     "pino-pretty": "^10.2.0",
     "typescript": "~4.6",
     "youch": "^3.2.3",
@@ -36,11 +40,22 @@
     "@adonisjs/core": "^5.9.0",
     "@adonisjs/lucid": "^18.4.0",
     "@adonisjs/repl": "^3.1.11",
+    "dotenv": "^16.3.1",
     "luxon": "^3.3.0",
     "mysql2": "^3.5.2",
+    "node-cron": "^3.0.2",
     "phc-argon2": "^1.1.4",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.1.13",
-    "source-map-support": "^0.5.21"
+    "shelljs": "^0.8.5",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/test/**",
+      "**/docs/**"
+    ],
+    "delay": 2500
   }
 }

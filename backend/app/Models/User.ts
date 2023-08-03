@@ -1,6 +1,3 @@
-import { DateTime } from 'luxon'
-import Hash from '@ioc:Adonis/Core/Hash'
-import ToDo from 'App/Models/ToDo'
 import {
   column,
   beforeSave,
@@ -8,6 +5,10 @@ import {
   hasMany,
   HasMany
 } from '@ioc:Adonis/Lucid/Orm'
+import { DateTime } from 'luxon'
+import Hash from '@ioc:Adonis/Core/Hash'
+import ToDo from 'App/Models/ToDo'
+import Notification from 'App/Models/Notification'
 import { Roles } from 'Contracts/enums'
 
 export default class User extends BaseModel {
@@ -40,6 +41,9 @@ export default class User extends BaseModel {
 
   @hasMany(() => ToDo)
   public toDos: HasMany<typeof ToDo>
+
+  @hasMany(() => Notification)
+  public notifications: HasMany<typeof Notification>
 
   @beforeSave()
   public static async hashPassword(user: User) {
