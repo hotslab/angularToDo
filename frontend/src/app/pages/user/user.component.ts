@@ -19,7 +19,13 @@ enum Roles {
     <div class="text-light bg-black d-flex justify-content-between align-items-center w-100 p-3 rounded flex-wrap">
       <h3>{{user ? user.name + ' ' +  user.surname : 'Create User' }}</h3>
       <div class="d-flex justify-content-end align-items-center">
-        <a (click)="goBackOrCancel()" class="btn btn-sm btn-danger">{{ this.editing ? 'Cancel' : 'Back'}}</a>
+        <a 
+          *ngIf="editing || (user && user.role === 'admin')"
+          (click)="goBackOrCancel()" 
+          class="btn btn-sm btn-danger"
+        >
+          {{ this.editing ? 'Cancel' : 'Back'}}
+        </a>
         <a id="open-editing" *ngIf="!editing" (click)="openEditing()" title="Edit ToDo" class="btn btn-sm btn-success ms-3">Edit</a>
       </div>
     </div>
