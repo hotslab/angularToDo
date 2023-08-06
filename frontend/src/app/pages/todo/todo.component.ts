@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ApiService } from 'src/app/services/api';
@@ -14,11 +15,11 @@ import { User } from 'src/app/types';
       <h3>{{toDo ? toDo.title : 'To Do' }}</h3>
       <div class="d-flex justify-content-end align-items-center">
         <a (click)="goBackOrCancel()" class="btn btn-sm btn-danger">{{ this.editing ? 'Cancel' : 'Back'}}</a>
-        <a *ngIf="!editing" (click)="markAsComplete()" title="Mark as done" class="btn btn-sm btn-primary ms-3">Done</a>
-        <a *ngIf="!editing" (click)="openEditing()" title="Edit ToDo" class="btn btn-sm btn-success ms-3">Edit</a>
+        <a id="mark-complete" *ngIf="!editing" (click)="markAsComplete()" title="Mark as done" class="btn btn-sm btn-primary ms-3">Done</a>
+        <a id="open-editing" *ngIf="!editing" (click)="openEditing()" title="Edit ToDo" class="btn btn-sm btn-success ms-3">Edit</a>
       </div>
     </div>
-    <div *ngIf="toDo && !editing" class="card mt-5 text-center w-100">
+    <div id="todo" *ngIf="toDo && !editing" class="card mt-5 text-center w-100">
       <div class="card-body">
         <p class="card-text fs-3">{{toDo.content}}</p>
       </div>
@@ -26,7 +27,7 @@ import { User } from 'src/app/types';
         Due on <span class="text-secondary">{{ toDo.due_date | date: "YYYY-MM-dd 'at' HH:mm:ss"}}</span>
       </div>
     </div>
-    <div *ngIf="editing" class="container mt-5">
+    <div id="todo-editing" *ngIf="editing" class="container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="card col-12 col-sm-6">
           <div class="card-body">
@@ -99,8 +100,8 @@ import { User } from 'src/app/types';
             </form>
           </div>
           <div class="card-footer text-body-secondary d-flex justify-content-end align-items-center">
-            <button *ngIf="!toDo" type="button" class="btn btn-danger" (click)="reset(); toDoForm.reset();">Reset</button>
-            <button type="submit" class="btn btn-success ms-3" (click)="onSubmit()" [disabled]="!toDoForm.form.valid || loading">Submit</button>
+            <button id="reset" *ngIf="!toDo" type="button" class="btn btn-danger" (click)="reset(); toDoForm.reset();">Reset</button>
+            <button id="submit" type="submit" class="btn btn-success ms-3" (click)="onSubmit()" [disabled]="!toDoForm.form.valid || loading">Submit</button>
           </div>
         </div>
       </div>
@@ -130,6 +131,9 @@ export class TodoComponent implements OnInit {
     private readonly store: Store,
   ) { }
 
+  @ViewChild('toDoForm')
+  toDoForm!: NgForm;
+
   user: User | null = null
   toDo: any = null
   toDoId: string | null = null
@@ -140,7 +144,7 @@ export class TodoComponent implements OnInit {
   editingToDo: {
     title: string | null
     content: string | null
-    completed: number
+    completed: boolean
     date: any | null,
     time: any | null,
     due_date: string | null
@@ -148,7 +152,7 @@ export class TodoComponent implements OnInit {
   } = {
       title: null,
       content: null,
-      completed: 0,
+      completed: false,
       date: null,
       time: null,
       due_date: null,
@@ -159,7 +163,7 @@ export class TodoComponent implements OnInit {
     this.editingToDo = {
       title: null,
       content: null,
-      completed: 0,
+      completed: false,
       date: null,
       time: null,
       due_date: null,
@@ -172,7 +176,7 @@ export class TodoComponent implements OnInit {
     this.editingToDo.time = formatDate(date, 'HH:mm:ss', 'en-US')
     this.editingToDo.title = this.toDo.title
     this.editingToDo.content = this.toDo.content
-    this.editingToDo.completed = this.toDo.completed
+    this.editingToDo.completed = Boolean(this.toDo.completed) ? true : false
     this.editingToDo.due_date = formatDate(date, 'yyyy-MM-dd HH:mm:ss', 'en-US')
   }
   openEditing() {
@@ -180,8 +184,9 @@ export class TodoComponent implements OnInit {
     this.editing = true
   }
   markAsComplete() {
-    this.editingToDo.completed = 1
     this.setValues()
+    this.editingToDo.user_id = Number(this.user?.id)
+    this.editingToDo.completed = true
     this.updateTodo()
   }
   onSubmit() {
@@ -204,13 +209,16 @@ export class TodoComponent implements OnInit {
   }
   updateTodo() {
     this.loading = true
-    this.http.putRequest({ url: `todos/${this.toDo.id}`, body: this.editingToDo }).subscribe({
+    this.http.putRequest({
+      url: `todos/${this.toDo.id}`,
+      body: { ...this.editingToDo, completed: this.editingToDo.completed ? 1 : 0 }
+    }).subscribe({
       next: (response: any) => {
         if (this.editing) {
           this.reset()
           this.editing = false
           this.getToDo()
-        } this.goBackOrCancel()
+        } else this.goBackOrCancel()
       },
       error: (error: any) => {
         this.errorMessage = error.message
@@ -220,7 +228,10 @@ export class TodoComponent implements OnInit {
   }
   createToDo() {
     this.loading = true
-    this.http.postRequest({ url: `todos`, body: this.editingToDo }).subscribe({
+    this.http.postRequest({
+      url: `todos`,
+      body: { ...this.editingToDo, completed: this.editingToDo.completed ? 1 : 0 }
+    }).subscribe({
       next: (response: any) => {
         this.goBackOrCancel()
         this.loading = false

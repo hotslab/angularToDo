@@ -25,24 +25,25 @@ enum Order {
       </div>
       <div class="row gx-5 gy-3 mb-3">
         <div class="col-12 col-sm-4 col-xl-3">
-          <select [(ngModel)]="order" class="form-select form-select-sm" aria-label="Select roles">
+          <select id="order" [(ngModel)]="order" class="form-select form-select-sm" aria-label="Select roles">
             <option value="desc" selected>Latest</option>
             <option value="asc">Oldest</option>
           </select>
         </div>
         <div class="col-12 col-sm-4 col-xl-2">
-          <input [(ngModel)]="title" class="form-control form-control-sm" type="text" placeholder="Search title.." aria-label=".form-control-sm example">
+          <input id="title" [(ngModel)]="title" class="form-control form-control-sm" type="text" placeholder="Search title.." aria-label=".form-control-sm example">
         </div>
         <div class="col-12 col-sm-4 3 col-xl-2">
-          <input [(ngModel)]="content" class="form-control form-control-sm" type="text" placeholder="Search content..." aria-label=".form-control-sm example">
+          <input id="content" [(ngModel)]="content" class="form-control form-control-sm" type="text" placeholder="Search content..." aria-label=".form-control-sm example">
         </div>
         <div class="col-12 col-sm-4 col-xl-2">
           <div class="form-check form-switch">
             <input 
               class="form-check-input" 
-              type="checkbox" 
-              [(ngModel)]="completed" name="completed"
               id="completed"
+              type="checkbox"
+              [(ngModel)]="completed"
+              name="completed"
             >
             <label class="form-check-label" style="font-size: 15px;" for="flexCheckIndeterminate">
               Completed
@@ -55,13 +56,13 @@ enum Order {
               <a (click)="resetSearch()" class="btn btn-sm w-100 btn-danger">Reset</a>
             </div>
             <div class="col-6">
-              <a (click)="getToDos()" class="btn btn-sm w-100 btn-success">Search</a>
+              <a id="search" (click)="getToDos()" class="btn btn-sm w-100 btn-success">Search</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div *ngFor="let toDo of toDos; let i = index" class="card text-light bg-black m-3" style="height: 320px; width: 300px;">
+    <div id="todos" *ngFor="let toDo of toDos; let i = index" class="card text-light bg-black m-3" style="height: 320px; width: 300px;">
       <div class="card-header mt-3">Due on <span class="text-white-50">{{toDo.due_date | date : "YYYY-MM-dd 'at' HH:mm:ss"}}</span></div>
       <div class="card-body">
         <h5 class="card-title overflow-hidden" style="height: 50px">
@@ -72,19 +73,20 @@ enum Order {
         </p>
       </div>
       <div class="card-body d-flex justify-content-end align-items-center w-100">
-        <a (click)="showDeleteModal(toDo)" class="btn btn-sm btn-danger ms-3">Delete</a>
-        <a (click)="goToToDo(toDo)" class="btn btn-sm btn-success ms-3">View</a>
+        <a id="delete" (click)="showDeleteModal(toDo)" class="btn btn-sm btn-danger ms-3">Delete</a>
+        <a id="view" (click)="goToToDo(toDo)" class="btn btn-sm btn-success ms-3">View</a>
       </div>
     </div>
     <div 
       *ngIf="toDos.length === 0"
+      id="no-todos"
       class="card text-light bg-black m-3 w-100 text center d-flex justify-content-center align-items-center" 
       style="height: 320px;"
     >
       <div class="card-header mt-3"><h3>No results found</h3></div>
     </div>
   </div>
-  <app-modal *ngIf="selectedToDo">
+  <app-modal *ngIf="selectedToDo" id="delete-modal">
     <div class="modal-header">
       <h5 class="modal-title text-danger">Delete {{selectedToDo.title}}?</h5>
         <button (click)="selectedToDo = null" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -93,8 +95,8 @@ enum Order {
         <p>Are you sure?</p>
       </div>
       <div class="modal-footer">
-        <button (click)="selectedToDo = null" type="button" class="btn btn-secondary">No</button>
-        <button (click)="deleteToDo()" type="button" class="btn btn-danger">Yes</button>
+        <button id="cancel-delete" (click)="selectedToDo = null" type="button" class="btn btn-secondary">No</button>
+        <button id="confirm-delete" (click)="deleteToDo()" type="button" class="btn btn-danger">Yes</button>
       </div>
     </app-modal>
     <app-modal *ngIf="errorMessage">
@@ -118,7 +120,6 @@ export class TodosComponent implements OnInit {
   constructor(
     private http: ApiService,
     private router: Router,
-    private route: ActivatedRoute,
     private readonly store: Store
   ) { }
 
@@ -129,13 +130,13 @@ export class TodosComponent implements OnInit {
   selectedToDo: any = null
   title: string | null = null
   content: string | null = null
-  completed: number = 0
+  completed: boolean = false
   order: Order = Order.DESC
 
   resetSearch() {
     this.title = null
     this.content = null
-    this.completed = 0
+    this.completed = false
     this.order = Order.DESC
     this.getToDos()
   }

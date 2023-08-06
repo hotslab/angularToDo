@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api';
 import { Store } from '@ngrx/store';
 import { login } from '../../state/actions/user.actions';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 type LoginCredentials = {
   email: string | null
@@ -61,7 +62,7 @@ type LoginCredentials = {
           </div>
           <div class="mt-3 d-flex justify-content-between align-items-center">
             <button type="button" class="btn btn-danger" (click)="reset(); loginForm.reset()">Reset</button>
-            <button type="submit" class="btn btn-success" [disabled]="!loginForm.form.valid || loading">Submit</button>
+            <button type="submit" id="submit" class="btn btn-success" [disabled]="!loginForm.form.valid || loading">Submit</button>
           </div>
         </form>
       </div>
@@ -90,33 +91,36 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+  @ViewChild('loginForm')
+  loginForm!: NgForm;
+
   loading: boolean = false
   errorMessage: string | null = null
   credentials: LoginCredentials = { email: 'john.wick@continental.com', password: 'boogeyman' }
 
   reset() {
-    // this.credentials = { email: null, password: null }
+    this.credentials = { email: null, password: null }
   }
   onSubmit() {
-    // event?.preventDefault();
-    // this.loading = true
-    // this.http.postRequest({ url: 'login', body: this.credentials }).subscribe({
-    //   next: (response: any) => {
-    //     this.store.dispatch(login({ user: response.user, token: response.token }))
-    //     this.router.navigate(['/todos'])
-    //     this.loading = false
-    //   },
-    //   error: (error: any) => {
-    //     this.errorMessage = error.message
-    //     this.loading = false
-    //   }
-    // })
+    event?.preventDefault();
+    this.loading = true
+    this.http.postRequest({ url: 'login', body: this.credentials }).subscribe({
+      next: (response: any) => {
+        this.store.dispatch(login({ user: response.user, token: response.token }))
+        this.router.navigate(['/todos'])
+        this.loading = false
+      },
+      error: (error: any) => {
+        this.errorMessage = error.message
+        this.loading = false
+      }
+    })
   }
 
   ngOnInit(): void {
-    // const unAuthorized = this.route.snapshot.queryParamMap.get('noAuth')
-    // this.errorMessage = unAuthorized
-    //   ? 'Your session expired or you are unauthorized. Please login again, or upgrade your privileges to access the resource requested respectively.'
-    //   : null
+    const unAuthorized = this.route.snapshot.queryParamMap.get('noAuth')
+    if (unAuthorized) this.errorMessage = `Your session expired or you are unauthorized. 
+       Please login again, or upgrade your privileges 
+       to access the resource requested respectively.`
   }
 }

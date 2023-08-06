@@ -9,13 +9,13 @@ describe('SpinnerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SpinnerComponent]
-    });
+    })
     fixture = TestBed.createComponent(SpinnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-});
+  })
+})

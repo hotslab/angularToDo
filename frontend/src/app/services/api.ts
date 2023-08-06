@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -15,7 +16,7 @@ const httpOptions = {
 export class ApiService {
     apiUrl: string = ''
     constructor(private httpClient: HttpClient) {
-        this.apiUrl = isDevMode() ? ' http://127.0.0.1:3333/api/' : ''
+        this.apiUrl = environment.apiUrl
     }
 
     private handleError(error: HttpErrorResponse) {
@@ -30,22 +31,28 @@ export class ApiService {
         return throwError(() => new Error(errorMessage))
     }
 
+    /** Get request handler */
     public getRequest(clientData: { url: string, options?: any }): Observable<any> {
         return this.httpClient.get<any>(`${this.apiUrl}${clientData.url}`, clientData.options)
             .pipe(catchError(this.handleError))
     }
+    /** Post request handler */
     public postRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
+        console.log(this.apiUrl)
         return this.httpClient.post<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }
+    /** Put request handler */
     public putRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
         return this.httpClient.put<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }
+    /** Patch request handler */
     public patchRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
         return this.httpClient.patch<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }
+    /** Delete request handler */
     public deleteRequest(clientData: { url: string, options?: any }): Observable<any> {
         return this.httpClient.delete<any>(`${this.apiUrl}${clientData.url}`, clientData.options);
     }

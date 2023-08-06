@@ -1,5 +1,6 @@
 import { Time, formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ApiService } from 'src/app/services/api';
@@ -19,10 +20,10 @@ enum Roles {
       <h3>{{user ? user.name + ' ' +  user.surname : 'Create User' }}</h3>
       <div class="d-flex justify-content-end align-items-center">
         <a (click)="goBackOrCancel()" class="btn btn-sm btn-danger">{{ this.editing ? 'Cancel' : 'Back'}}</a>
-        <a *ngIf="!editing" (click)="openEditing()" title="Edit ToDo" class="btn btn-sm btn-success ms-3">Edit</a>
+        <a id="open-editing" *ngIf="!editing" (click)="openEditing()" title="Edit ToDo" class="btn btn-sm btn-success ms-3">Edit</a>
       </div>
     </div>
-    <div *ngIf="user && !editing" class="card mt-5 col-12 border" style="max-width: 800px; height: 300px;">
+    <div id="user" *ngIf="user && !editing" class="card mt-5 col-12 border" style="max-width: 800px; height: 300px;">
       <div class="row g-0">
         <div class="col-md-4 border border-secondary-subtle profile-image" style="background-image: url('../../assets/images/coin.jpg');">
         </div>
@@ -40,7 +41,7 @@ enum Roles {
         </div>
       </div>
     </div>
-    <div *ngIf="editing" class="container mt-5">
+    <div id="user-editing" *ngIf="editing" class="container mt-5">
       <div class="row align-items-center justify-content-center">
         <div class="card col-12 col-sm-6">
           <div class="card-body">
@@ -97,7 +98,7 @@ enum Roles {
                   </div>
                 </div>
               </div>
-              <div class="form-group mb-3">
+              <div *ngIf="authUser && authUser.role === 'admin' " class="form-group mb-3">
                 <label for="role">Role</label>
                 <select 
                   aria-label="Select roles"
@@ -137,7 +138,7 @@ enum Roles {
           </div>
           <div class="card-footer text-body-secondary d-flex justify-content-end align-items-center">
             <button *ngIf="!user" type="button" class="btn btn-danger" (click)="reset(); userForm.reset();">Reset</button>
-            <button type="submit" class="btn btn-success ms-3" (click)="onSubmit()" [disabled]="!userForm.form.valid || loading">Submit</button>
+            <button id="submit" type="submit" class="btn btn-success ms-3" (click)="onSubmit()" [disabled]="!userForm.form.valid || loading">Submit</button>
           </div>
         </div>
       </div>
@@ -175,6 +176,9 @@ export class UserComponent implements OnInit {
     private readonly store: Store,
   ) { }
 
+  @ViewChild('userForm')
+  userForm!: NgForm
+
   authUser: User | null = null
   user: any = null
   userId: string | null = null
@@ -188,7 +192,7 @@ export class UserComponent implements OnInit {
     surname: string | null
     role: Roles,
     id: number | null,
-    password?: null
+    password?: string | null
   } = {
       email: null,
       name: null,

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api';
 import { Store } from '@ngrx/store';
 import { register } from '../../state/actions/user.actions';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 type RegisterCredentials = {
   email: string | null
@@ -95,7 +96,7 @@ type RegisterCredentials = {
           </div>
           <div class="mt-3 d-flex justify-content-between align-items-center">
             <button type="button" class="btn btn-danger" (click)="reset(); registerForm.reset()">Reset</button>
-            <button type="submit" class="btn btn-success" [disabled]="!registerForm.form.valid || loading">Submit</button>
+            <button type="submit" id="submit" class="btn btn-success" [disabled]="!registerForm.form.valid || loading">Submit</button>
           </div>
         </form>
       </div>
@@ -122,6 +123,9 @@ export class RegisterComponent {
     private readonly store: Store,
     private router: Router
   ) { }
+
+  @ViewChild('registerForm')
+  registerForm!: NgForm;
 
   loading: boolean = false
   errorMessage: string | null = null

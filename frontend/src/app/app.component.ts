@@ -53,7 +53,7 @@ import { addNotifications, logout, removeNotifications } from './state/actions/u
             *ngIf="user && tokenData?.token"
             [ngClass]="{'bg-dark': currentUrl === '/notifications', 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer position-relative':true,}"
           >
-            Notifications <span *ngIf="notificationCount > 0" class="badge text-bg-danger">{{ notificationCount }}</span>
+            Notifications <span *ngIf="notificationCount && notificationCount > 0" class="badge text-bg-danger">{{ notificationCount }}</span>
           </a>
           <a  
             routerLink="/login" 
@@ -70,6 +70,7 @@ import { addNotifications, logout, removeNotifications } from './state/actions/u
             Register
           </a>
           <a  
+            id="logout"
             (click)="logOut()" 
             *ngIf="user && tokenData?.token" 
             [ngClass]="{'bg-dark': false, 'navbar-brand px-3 mx-0 text-light fs-6 cursor-pointer':true,}"
@@ -126,6 +127,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.store.select(selectUserData).subscribe({ next: (user: User | null) => { this.user = user } })
     this.store.select(selectUserToken).subscribe({ next: (token: Token | null) => this.tokenData = token })
+    this.store.select(selectUserNotifications).subscribe({ next: (notifications: number) => { this.notificationCount = notifications } })
     this.router.events.subscribe({
       next: event => {
         if (event instanceof NavigationEnd) this.currentUrl = event.urlAfterRedirects
@@ -134,8 +136,7 @@ export class AppComponent implements OnInit {
     })
     this.getNotifications()
   }
-  ngAfterViewInit(): void {
-    this.store.select(selectUserNotifications).subscribe({ next: (notifications: number) => { this.notificationCount = notifications } })
-  }
+  // ngAfterViewInit(): void {
+  // }
 }
 

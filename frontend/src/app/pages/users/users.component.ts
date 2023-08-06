@@ -30,22 +30,22 @@ enum Order {
       </div>
       <div class="row gx-5 gy-3 mb-3">
         <div class="col-12 col-sm-4 col-xl-2">
-          <input [(ngModel)]="email" class="form-control form-control-sm" type="text" placeholder="Search email.." aria-label=".form-control-sm example">
+          <input id="email" [(ngModel)]="email" class="form-control form-control-sm" type="text" placeholder="Search email.." aria-label=".form-control-sm example">
         </div>
         <div class="col-12 col-sm-4 col-xl-2">
-          <input [(ngModel)]="name" class="form-control form-control-sm" type="text" placeholder="Search name..." aria-label=".form-control-sm example">
+          <input id="name" [(ngModel)]="name" class="form-control form-control-sm" type="text" placeholder="Search name..." aria-label=".form-control-sm example">
         </div>
         <div class="col-12 col-sm-4 col-xl-2">
-          <input [(ngModel)]="surname" class="form-control form-control-sm" type="text" placeholder="Search surname..." aria-label=".form-control-sm example">
+          <input id="surname" [(ngModel)]="surname" class="form-control form-control-sm" type="text" placeholder="Search surname..." aria-label=".form-control-sm example">
         </div>
         <div class="col-12 col-sm-4 col-xl-2">
-          <select [(ngModel)]="role" class="form-select form-select-sm" aria-label="Select roles">
+          <select id="role" [(ngModel)]="role" class="form-select form-select-sm" aria-label="Select roles">
             <option value="user" selected>User</option>
             <option value="admin">Admin</option>
           </select>
         </div>
         <div class="col-12 col-sm-4 col-xl-2">
-          <select [(ngModel)]="order" class="form-select form-select-sm" aria-label="Select roles">
+          <select id="order" [(ngModel)]="order" class="form-select form-select-sm" aria-label="Select roles">
             <option value="desc" selected>Latest</option>
             <option value="asc">Oldest</option>
           </select>
@@ -53,10 +53,10 @@ enum Order {
         <div class="col-12 col-sm-4 col-xl-2">
           <div class="row">
             <div class="col-6">
-              <a (click)="resetSearch()" class="btn btn-sm w-100 btn-danger">Reset</a>
+              <a id="reset" (click)="resetSearch()" class="btn btn-sm w-100 btn-danger">Reset</a>
             </div>
             <div class="col-6">
-              <a (click)="getUsers()" class="btn btn-sm w-100 btn-success">Search</a>
+              <a id="search" (click)="getUsers()" class="btn btn-sm w-100 btn-success">Search</a>
             </div>
           </div>
         </div>
@@ -73,8 +73,8 @@ enum Order {
         <h6 class="card-text">{{ user.created_at | date: "YYYY-MM-dd 'at' HH:mm:ss"}}</h6>
       </div>
       <div class="card-body d-flex justify-content-end align-items-center w-100">
-        <a (click)="showDeleteModal(user)" class="btn btn-sm btn-danger ms-3">Delete</a>
-        <a (click)="goToUser(user)" class="btn btn-sm btn-success ms-3">View</a>
+        <a id="delete" (click)="showDeleteModal(user)" class="btn btn-sm btn-danger ms-3">Delete</a>
+        <a id="view" (click)="goToUser(user)" class="btn btn-sm btn-success ms-3">View</a>
       </div>
     </div>
     <div 
@@ -85,7 +85,7 @@ enum Order {
       <div class="card-header mt-3"><h3>No results found</h3></div>
     </div>
   </div>
-  <app-modal *ngIf="selectedUser">
+  <app-modal id="delete-modal" *ngIf="selectedUser">
     <div class="modal-header">
       <h5 class="modal-title text-danger">Delete {{selectedUser.name + ' ' + selectedUser.surname}}?</h5>
         <button (click)="selectedUser = null" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -95,7 +95,7 @@ enum Order {
       </div>
       <div class="modal-footer">
         <button (click)="selectedUser = null" type="button" class="btn btn-secondary">No</button>
-        <button (click)="deleteUser()" type="button" class="btn btn-danger">Yes</button>
+        <button id="confirm-delete" (click)="deleteUser()" type="button" class="btn btn-danger">Yes</button>
       </div>
     </app-modal>
     <app-modal *ngIf="errorMessage">
@@ -118,7 +118,6 @@ export class UsersComponent implements OnInit {
   constructor(
     private http: ApiService,
     private router: Router,
-    private route: ActivatedRoute,
     private readonly store: Store
   ) { }
 

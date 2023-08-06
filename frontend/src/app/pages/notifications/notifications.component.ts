@@ -15,7 +15,7 @@ import { User } from 'src/app/types';
       </h3>
       <h2 class="text-secondary"> {{notifications.length}}</h2>
     </div>
-    <div *ngFor="let notification of notifications; let i = index" class="card text-light bg-black m-3" style="height: 270px; width: 300px;">
+    <div id="notifications" *ngFor="let notification of notifications; let i = index" class="card text-light bg-black m-3" style="height: 270px; width: 300px;">
       <div class="card-header mt-3">
         <span class="text-white-50 fw-bolder text-uppercase cursor-pointer" style="font-size: 17px;" [title]="notification.title">
           {{ notification.title.length > 30 ? notification.title.substring(0, 30) + '...' : notification.title}}
@@ -31,11 +31,12 @@ import { User } from 'src/app/types';
         <h6 class="card-text">{{ notification.due_date | date: "yyyy-MM-dd 'at' HH:mm:ss"}}</h6>
       </div>
       <div class="card-body d-flex justify-content-end align-items-center w-100">
-        <a (click)="viewToDo(notification)" class="btn btn-sm btn-success ms-3">View</a>
+        <a id="view" (click)="viewToDo(notification)" class="btn btn-sm btn-success ms-3">View</a>
       </div>
     </div>
     <div 
       *ngIf="notifications.length === 0"
+      id="no-notifications"
       class="card text-light bg-black mt-3 w-100 text center d-flex justify-content-center align-items-center" 
       style="height: 320px;"
     >

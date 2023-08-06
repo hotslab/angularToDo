@@ -18,4 +18,10 @@ describe('PageNotFoundComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show not found text message', () => {
+    const noFoundText: HTMLElement = fixture.debugElement.nativeElement.querySelector('h1')
+    expect(noFoundText).toBeTruthy()
+    expect(noFoundText.textContent).toEqual('NOT FOUND')
+  })
 });

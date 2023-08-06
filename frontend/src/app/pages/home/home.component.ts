@@ -10,9 +10,10 @@ import { Component } from '@angular/core';
     <div class="text-center">
         <img 
           class="mb-3 shadow-lg" 
+          id="banner-image"
           src="../../assets/images/logo.png" width="250" height="250" priority
         >
-        <h2 class="text-light fw-bolder shadow-lg bg-dark px-4 py-3 rounded-pill">THE CONTINENTAL TODO</h2>
+        <h2 id="banner-text" class="text-light fw-bolder shadow-lg bg-dark px-4 py-3 rounded-pill">THE CONTINENTAL TODO</h2>
     </div>
   </div>
   `,
