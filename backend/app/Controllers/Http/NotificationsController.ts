@@ -13,7 +13,7 @@ export default class NotificationsController {
         const notification = await Notification.find(request.param('id'))
         if (notification) {
             await notification.merge({ viewed: true }).save()
-            return response.created({ toDo: notification })
+            return response.created({ notification: notification })
         } else return response.notFound('Notification not found')
     }
 }

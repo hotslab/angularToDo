@@ -4,7 +4,8 @@ import { validator, schema, rules } from '@ioc:Adonis/Core/Validator'
 import { Roles } from 'Contracts/enums'
 
 export default class UsersController {
-    public async index({ request, response }: HttpContextContract) {
+    public async index({ request, response, auth }: HttpContextContract) {
+        if (auth.user?.role !== 'admin') return response.unauthorized('Unauthorized')
         const users = await User.query().where('role', request.input('role'))
             .where((query) => {
                 if (request.input('email'))
@@ -22,7 +23,8 @@ export default class UsersController {
         return response.ok({ user: await User.find(request.param('id')) })
     }
 
-    public async store({ request, response }: HttpContextContract) {
+    public async store({ request, response, auth }: HttpContextContract) {
+        if (auth.user?.role !== 'admin') return response.unauthorized('Unauthorized')
         await validator.validate({
             schema: schema.create({
                 email: schema.string([
@@ -48,7 +50,8 @@ export default class UsersController {
         return response.created({ user: user })
     }
 
-    public async update({ request, response }: HttpContextContract) {
+    public async update({ request, response, auth }: HttpContextContract) {
+        if (auth.user?.role !== 'admin') return response.unauthorized('Unauthorized')
         const user = await User.find(request.param('id'))
         if (user) {
             await validator.validate({
@@ -76,7 +79,8 @@ export default class UsersController {
         } else response.notFound('User not found')
     }
 
-    public async destroy({ request, response }: HttpContextContract) {
+    public async destroy({ request, response, auth }: HttpContextContract) {
+        if (auth.user?.role !== 'admin') return response.unauthorized('Unauthorized')
         const user = await User.findOrFail(request.param('id'))
         await user.delete()
         return response.ok({ user: user })
