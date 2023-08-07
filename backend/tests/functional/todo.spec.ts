@@ -17,7 +17,8 @@ type AuthUser = {
     type: string
     token: string
     expires_at: string
-  }
+  },
+  notifications: any[]
 }
 
 test.group('Todos', () => {

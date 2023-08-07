@@ -24,8 +24,14 @@ export class ApiService {
         if (error.status !== 500) {
             if (typeof error.error === 'string')
                 errorMessage = error.error
-            else if (error.error instanceof Object && error.error.constructor === Object)
+            else if (error.error instanceof Object && error.error.constructor === Object) {
                 if (error.error.hasOwnProperty('message')) errorMessage = error.error.message
+                else {
+                    let errorText = ''
+                    for (const [key, value] of Object.entries(error.error)) errorText += `${key}: ${value}, `
+                    errorMessage = errorText.trim().slice(0, -1)
+                }
+            }
         }
         // Return an observable with a user-facing error message.
         return throwError(() => new Error(errorMessage))
@@ -38,7 +44,6 @@ export class ApiService {
     }
     /** Post request handler */
     public postRequest(clientData: { url: string, body: any, options?: any }): Observable<any> {
-        console.log(this.apiUrl)
         return this.httpClient.post<any>(`${this.apiUrl}${clientData.url}`, clientData.body, clientData.options)
             .pipe(catchError(this.handleError))
     }

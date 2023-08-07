@@ -137,7 +137,6 @@ describe('UsersComponent', () => {
     surname.dispatchEvent(new Event('input'))
     role.value = 'admin'
     role.dispatchEvent(new Event('change'))
-    console.log(order)
     order.value = 'asc'
     order.dispatchEvent(new Event('change'))
 
@@ -146,7 +145,6 @@ describe('UsersComponent', () => {
     expect(component.surname).toBe('Perkins')
     expect(component.role).toBe('admin')
     expect(component.order).toBe('asc')
-    console.log(component.order, component.role)
 
     const search: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector('#search')
     search.click()

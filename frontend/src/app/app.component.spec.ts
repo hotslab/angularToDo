@@ -70,7 +70,6 @@ let testApiService: Partial<ApiService> = {
 
 let testStore: Partial<Store> = {
   select: (value: any): Observable<any> => new Observable((subscriber) => {
-    console.log(value)
     subscriber.next()
   }),
   dispatch: (action: any): void => { }
@@ -143,7 +142,6 @@ describe('AppComponent', () => {
     expect(component.user).toEqual(manager)
     expect(component.tokenData).toEqual(token)
     const logoutButton: HTMLLinkElement = fixture.debugElement.nativeElement.querySelector('#logout')
-    console.log(logoutButton.textContent)
     expect(logoutButton.textContent?.trim()).toEqual('Logout')
     logoutButton.click()
     expect(router.navigate).toHaveBeenCalledWith(['/'])

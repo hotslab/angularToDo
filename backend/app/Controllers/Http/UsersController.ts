@@ -51,8 +51,6 @@ export default class UsersController {
     }
 
     public async update({ request, response, auth }: HttpContextContract) {
-        console.log(auth.user?.id !== Number(request.param('id')))
-        console.log(auth.user?.role !== 'admin')
         if ((auth.user?.id !== Number(request.param('id'))) && (auth.user?.role !== 'admin'))
             return response.unauthorized('Unauthorized')
         const user = await User.find(request.param('id'))

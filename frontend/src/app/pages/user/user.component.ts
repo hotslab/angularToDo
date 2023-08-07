@@ -20,7 +20,7 @@ enum Roles {
       <h3>{{user ? user.name + ' ' +  user.surname : 'Create User' }}</h3>
       <div class="d-flex justify-content-end align-items-center">
         <a 
-          *ngIf="editing || (user && user.role === 'admin')"
+          *ngIf="editing || (authUser && authUser.role == 'admin')"
           (click)="goBackOrCancel()" 
           class="btn btn-sm btn-danger"
         >

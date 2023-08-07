@@ -127,7 +127,6 @@ describe('NotificationsComponent', () => {
     spyOn(http, 'putRequest').and.callThrough()
     const view: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector('#view')
     expect(view).toBeTruthy()
-    console.log(view)
     view.click()
     expect(http.putRequest).toHaveBeenCalledWith({ url: 'notifications/1', body: {} })
     expect(router.navigate).toHaveBeenCalledOnceWith(['/todo'], { queryParams: { id: 1 } })

@@ -136,7 +136,5 @@ export class AppComponent implements OnInit {
     })
     this.getNotifications()
   }
-  // ngAfterViewInit(): void {
-  // }
 }
 

@@ -16,89 +16,95 @@ type RegisterCredentials = {
   selector: 'app-login',
   template: `
   <div class="container-fluid m-0 d-flex flex-column justify-content-start align-items-center pt-4 pb-5">
-    <div class="text-center" style="width: 40%">
-        <img 
-          class="mb-3 shadow" 
-          src="assets/images/logo.png" width="100" height="100" priority
-        >
-        <div class="text-light bg-black rounded p-3 fs-6 fw-bolder">REGISTER</div>
-    </div>
-    <div class="card mt-5 p-4" style="width: 40%">
-      <div class="card-content">
-        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-          <div class="form-group mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input 
-              type="email" 
-              class="form-control" 
-              id="email"
-              required
-              email
-              [(ngModel)]="credentials.email" name="email"
-              #email="ngModel"
+    <div class="container">
+      <div class="row m-3 p-0 justify-content-center">
+        <div class="text-center col-12 col-md-6">
+            <img 
+              class="mb-3 shadow" 
+              src="assets/images/logo.png" width="100" height="100" priority
             >
-            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger fs-6 mb-3">
-              <div *ngIf="email.errors?.['required']">
-                Email is required.
+            <div class="text-light bg-black rounded p-3 fs-6 fw-bolder">REGISTER</div>
+        </div>
+      </div>
+      <div class="row mt-4 justify-content-center">
+        <div class="card col-12 col-md-6 p-4">
+          <div class="card-content">
+            <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+              <div class="form-group mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email"
+                  required
+                  email
+                  [(ngModel)]="credentials.email" name="email"
+                  #email="ngModel"
+                >
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger fs-6 mb-3">
+                  <div *ngIf="email.errors?.['required']">
+                    Email is required.
+                  </div>
+                  <div *ngIf="email.errors?.['email']">
+                    Email is in incorrect format
+                  </div>
+                </div>
               </div>
-              <div *ngIf="email.errors?.['email']">
-                Email is in incorrect format
+              <div class="form-group mb-3">
+                <label for="name">Name</label>
+                <input 
+                  type="text" 
+                  class="form-control"
+                  id="name"
+                  required
+                  [(ngModel)]="credentials.name" name="name"
+                  #name="ngModel"
+                >
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger fs-6 mb-3">
+                  <div *ngIf="name.errors?.['required']">
+                    Name is required.
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="form-group mb-3">
-            <label for="name">Name</label>
-            <input 
-              type="text" 
-              class="form-control"
-              id="name"
-              required
-              [(ngModel)]="credentials.name" name="name"
-              #name="ngModel"
-            >
-            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger fs-6 mb-3">
-              <div *ngIf="name.errors?.['required']">
-                Name is required.
+              <div class="form-group mb-3">
+                <label for="surname">Surname</label>
+                <input 
+                  type="text" 
+                  class="form-control"
+                  id="surname"
+                  required
+                  [(ngModel)]="credentials.surname" name="surname"
+                  #surname="ngModel"
+                >
+                <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger fs-6 mb-3">
+                  <div *ngIf="surname.errors?.['required']">
+                    Surname is required.
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="form-group mb-3">
-            <label for="surname">Surname</label>
-            <input 
-              type="text" 
-              class="form-control"
-              id="surname"
-              required
-              [(ngModel)]="credentials.surname" name="surname"
-              #surname="ngModel"
-            >
-            <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger fs-6 mb-3">
-              <div *ngIf="surname.errors?.['required']">
-                Surname is required.
+              <div class="form-group mb-3">
+                <label for="password">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control"
+                  id="password"
+                  required
+                  [(ngModel)]="credentials.password" name="password"
+                  #password="ngModel"
+                >
+                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger fs-6 mb-3">
+                  <div *ngIf="password.errors?.['required']">
+                    Password is required.
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="form-group mb-3">
-            <label for="password">Password</label>
-            <input 
-              type="password" 
-              class="form-control"
-              id="password"
-              required
-              [(ngModel)]="credentials.password" name="password"
-              #password="ngModel"
-            >
-            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger fs-6 mb-3">
-              <div *ngIf="password.errors?.['required']">
-                Password is required.
+              <div class="mt-3 d-flex justify-content-between align-items-center flex-wrap">
+                <button type="button" class="btn btn-danger m-2" (click)="reset(); registerForm.reset()">Reset</button>
+                <button type="submit" id="submit" class="btn btn-success m-2" [disabled]="!registerForm.form.valid || loading">Submit</button>
               </div>
-            </div>
+            </form>
           </div>
-          <div class="mt-3 d-flex justify-content-between align-items-center">
-            <button type="button" class="btn btn-danger" (click)="reset(); registerForm.reset()">Reset</button>
-            <button type="submit" id="submit" class="btn btn-success" [disabled]="!registerForm.form.valid || loading">Submit</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>

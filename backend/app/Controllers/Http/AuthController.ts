@@ -17,9 +17,11 @@ export default class AuthController {
             if (!(await Hash.verify(user.password, request.input('password'))))
                 return response.unauthorized('Invalid credentials')
             const token = await auth.use('api').generate(user, { expiresIn: '2 days' })
+            const notifications = await user.related('notifications').query().where('viewed', false).orderBy('due_date', 'desc')
             return response.created({
                 user: user,
-                token: token
+                token: token,
+                notifications: notifications
             })
         }
         else return response.notFound('User not found')
